@@ -1,7 +1,8 @@
 package common
 
-type Scene interface {
-	AddObject(object Object)
+type IScene interface {
+	AddObject(object *Object)
 	GetObjectById(id int64) (*Object, error)
 	UnmarshalJSON(data []byte) error
+	MarshalJSON() ([]byte, error)
 }
