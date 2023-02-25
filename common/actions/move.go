@@ -1,28 +1,43 @@
 package actions
 
 import (
+	"encoding/json"
+
 	"github.com/group-project-gut/lynx-scene-host/common"
 )
 
 type Move struct {
-	TargetId int64
-	Vector   common.Vector
+	TargetId int64         `json:"target_id"`
+	Vector   common.Vector `json:"vector"`
 }
 
-func (move Move) Requirements(scene common.Scene) []func(scene common.Scene) bool {
-	return make([]func(scene common.Scene) bool, 0, 0)
+func (move Move) Type() string {
+	return "Move"
 }
 
-func (move Move) Effects(scene common.Scene) []func(scene common.Scene) common.Scene {
-	return []func(scene common.Scene) common.Scene{
-		func(scene common.Scene) common.Scene {
+func (move Move) Args() string {
+	args, err := json.Marshal(move)
+	if err != nil {
+		panic(err)
+	}
+	return string(args)
+}
+
+func (move Move) Requirements(scene common.IScene) []func(scene common.IScene) bool {
+	return make([]func(scene common.IScene) bool, 0, 0)
+}
+
+func (move Move) Effects(scene common.IScene) []func(scene common.IScene) common.IScene {
+	return []func(scene common.IScene) common.IScene{
+		func(scene common.IScene) common.IScene {
 			object, err := scene.GetObjectById(move.TargetId)
 
 			if err != nil {
 				return scene
 			}
 
-			(*object).Position().Add(common.NORTH())
+			// TODO: Maybe we should make Vector immutable or sth
+			(*object).Position.Add(common.NORTH())
 			return scene
 		},
 	}
