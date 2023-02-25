@@ -5,6 +5,26 @@ import (
 	"testing"
 )
 
+func TestObjectType(t *testing.T) {
+	object := Object{
+		Id:                  123,
+		Name:                "Ondrejek",
+		Position:            Vector{1123, -1231},
+		AdditionalPositions: []Vector{{0, 1}, {1, 1}},
+		State:               "smoking",
+		Walkable:            false,
+		Tick:                "move(Direction.SOUTH)",
+		OnDeath:             "wave()",
+	}
+	entity := object
+
+	type_string := entity.Type()
+	if type_string != "Object" {
+		t.Fatalf(`Object.Type() error. Expected "Object", received "%s"`, type_string)
+	}
+}
+
+// TODO: We should probably test this by the `Args()` interface
 func TestObjectSerialization(t *testing.T) {
 	object := Object{
 		Id:                  123,
