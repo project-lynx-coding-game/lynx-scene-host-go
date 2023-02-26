@@ -1,8 +1,8 @@
-import sys
 from lynx.common.scene import Scene
-from lynx.common.object import Object
-import json
+from lynx.common.actions.move import Move
+from lynx.common.vector import Vector
 
 input = input()
 scene = Scene.deserialize(input)
-print("{\"types\":[\"Floor\"],\"objects\":[\"{\\\"id\\\":172,\\\"position\\\":{\\\"x\\\":0,\\\"y\\\":0}}\"]}")
+scene.add_entity(Move(object_id=0, vector=Vector(1,1)))
+print(scene.serialize())
