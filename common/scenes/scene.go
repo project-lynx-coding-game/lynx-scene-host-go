@@ -52,6 +52,9 @@ func (scene Scene) MarshalJSON() ([]byte, error) {
 }
 
 func (scene *Scene) UnmarshalJSON(data []byte) error {
+	scene.idMap = map[int64]*Object{}
+	scene.processMap = map[string]*process{}
+
 	var exported_scene exportedScene
 	err := json.Unmarshal(data, &exported_scene)
 	if err != nil {
@@ -71,6 +74,7 @@ func (scene *Scene) UnmarshalJSON(data []byte) error {
 				panic(err)
 			}
 			entity = object
+			scene.AddObject(&object)
 		case "Move":
 			var move Move
 			err := json.Unmarshal([]byte(serialized_entity.Args), &move)
@@ -78,8 +82,8 @@ func (scene *Scene) UnmarshalJSON(data []byte) error {
 				panic(err)
 			}
 			entity = move
+			scene.entities = append(scene.entities, entity)
 		}
-		scene.entities = append(scene.entities, entity)
 	}
 
 	return nil
@@ -92,8 +96,8 @@ func (scene *Scene) AddObject(object *Object) {
 }
 
 func (scene *Scene) CreateProcess(name string) {
-	cmd := exec.Command("python", "-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678", "./execution-runtime.py")
-	//cmd := exec.Command("python", "./Object.py")
+	//cmd := exec.Command("python", "-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678", "./execution-runtime.py")
+	cmd := exec.Command("python", "./execution-runtime.py")
 
 	child_read, err := cmd.StdoutPipe()
 	if err != nil {
