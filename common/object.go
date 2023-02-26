@@ -2,9 +2,6 @@ package common
 
 import (
 	"encoding/json"
-	"fmt"
-	"os"
-	"os/exec"
 )
 
 // Right now there's no constructor for the type
@@ -20,8 +17,7 @@ type Object struct {
 	Walkable            bool     `json:"walkable"`
 	Tick                string   `json:"tick"`
 	OnDeath             string   `json:"on_death"`
-	encoder             json.Encoder
-	decoder             json.Decoder
+	Owner               string   `json:"owner"`
 }
 
 func (object Object) Type() string {
@@ -35,47 +31,4 @@ func (object Object) Args() string {
 		panic(err)
 	}
 	return string(args)
-}
-
-func (object *Object) Initialize() {
-	cmd := exec.Command("python", "-m", "debugpy", "--wait-for-client", "--listen", "0.0.0.0:5678", "./Object.py")
-	//cmd := exec.Command("python", "./Object.py")
-
-	child_read, err := cmd.StdoutPipe()
-	if err != nil {
-		panic(err)
-	}
-
-	child_write, err := cmd.StdinPipe()
-	if err != nil {
-		panic(err)
-	}
-
-	cmd.Stderr = os.Stderr
-
-	object.encoder = *json.NewEncoder(child_write)
-	object.decoder = *json.NewDecoder(child_read)
-
-	cmd.Start()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (object *Object) runCode(scene IScene) []IAction {
-	err := object.encoder.Encode(scene)
-	if err != nil {
-		panic(err)
-	}
-
-	var new_scene IScene
-	err = object.decoder.Decode(&new_scene)
-	if err != nil {
-		panic(err)
-	}
-
-	sceneMarshalled, _ := json.Marshal(new_scene)
-	fmt.Println(string(sceneMarshalled))
-
-	return make([]IAction, 0, 0)
 }
