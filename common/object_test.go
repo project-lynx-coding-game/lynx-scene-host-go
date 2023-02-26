@@ -72,3 +72,24 @@ func TestObjectDeserialization(t *testing.T) {
 		t.Fatalf(`Deserialized struct is wrong`)
 	}
 }
+
+func TestObjectPartialDeserialization(t *testing.T) {
+	expected_object := Object{
+		Id: 123,
+	}
+
+	object_serialized := `{"id":123}`
+
+	object_deserialized := Object{}
+	err := json.Unmarshal([]byte(object_serialized), &object_deserialized)
+	if err != nil {
+		t.Fatalf(`Failed to deserialize Object - %v`, err)
+	}
+
+	if expected_object.Id != object_deserialized.Id {
+		t.Fatalf(`Deserialized struct is wrong`)
+	}
+	if expected_object.Name != object_deserialized.Name {
+		t.Fatalf(`Deserialized struct is wrong`)
+	}
+}
