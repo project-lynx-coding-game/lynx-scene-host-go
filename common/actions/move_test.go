@@ -50,3 +50,11 @@ func TestMoveDeserialization(t *testing.T) {
 		t.Fatalf(`Deserialized object is not equal. Expected "%+v", received "%+v"`, move, move_deserialized)
 	}
 }
+
+func TestMoveEffects(t *testing.T) {
+	// TODO: test if applying effects of `Move` results in proper state
+}
+
+func TestMoveRequirements(t *testing.T) {
+	// TODO: test if requirements of `Move` properly discard malformed actions
+}
