@@ -35,6 +35,7 @@ func TestObjectSerialization(t *testing.T) {
 		Walkable:            false,
 		Tick:                "move(Direction.SOUTH)",
 		OnDeath:             "wave()",
+		Owner:               "rut",
 	}
 
 	object_serialized, err := json.Marshal(object)
@@ -42,7 +43,7 @@ func TestObjectSerialization(t *testing.T) {
 		t.Fatalf(`Failed to serialize Object - %v`, err)
 	}
 
-	expected_object_serialized := `{"id":123,"name":"Ondrejek","position":{"x":1123,"y":-1231},"additional_positions":[{"x":0,"y":1},{"x":1,"y":1}],"state":"smoking","walkable":false,"tick":"move(Direction.SOUTH)","on_death":"wave()"}`
+	expected_object_serialized := `{"id":123,"name":"Ondrejek","position":{"x":1123,"y":-1231},"additional_positions":[{"x":0,"y":1},{"x":1,"y":1}],"state":"smoking","walkable":false,"tick":"move(Direction.SOUTH)","on_death":"wave()","owner":"rut"}`
 	if string(object_serialized) != expected_object_serialized {
 		t.Fatalf(`Serialization format is wrong - got: %s, expected: %s`, string(object_serialized), expected_object_serialized)
 	}
