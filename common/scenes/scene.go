@@ -21,15 +21,6 @@ type process struct {
 	Decoder *json.Decoder
 }
 
-type serializedEntity struct {
-	Type string `json:"type"`
-	Args string `json:"args"`
-}
-
-type exportedScene struct {
-	Entities []serializedEntity `json:"entities"`
-}
-
 func (scene *Scene) AddObject(object *Object) {
 	scene.Entities = append(scene.Entities, Entity{IEntity: object})
 
