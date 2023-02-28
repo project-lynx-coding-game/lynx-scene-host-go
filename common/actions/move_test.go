@@ -9,7 +9,7 @@ import (
 
 func TestMoveType(t *testing.T) {
 	move := Move{
-		TargetId: 1245,
+		ObjectId: 1245,
 		Vector:   common.Vector{X: 321, Y: 565},
 	}
 	entity := move
@@ -21,13 +21,13 @@ func TestMoveType(t *testing.T) {
 }
 func TestMoveArgs(t *testing.T) {
 	move := Move{
-		TargetId: 1245,
+		ObjectId: 1245,
 		Vector:   common.Vector{X: 321, Y: 565},
 	}
 	entity := move
 
 	args := entity.Args()
-	expected := `{"target_id":1245,"vector":{"x":321,"y":565}}`
+	expected := `{"object_id":1245,"vector":{"x":321,"y":565}}`
 	if args != expected {
 		t.Fatalf(`Move.Args() error. Expected "%s", received "%s"`, expected, args)
 	}
@@ -35,10 +35,10 @@ func TestMoveArgs(t *testing.T) {
 
 func TestMoveDeserialization(t *testing.T) {
 	move := Move{
-		TargetId: 1245,
+		ObjectId: 1245,
 		Vector:   common.Vector{X: 321, Y: 565},
 	}
-	args := `{"target_id":1245,"vector":{"x":321,"y":565}}`
+	args := `{"object_id":1245,"vector":{"x":321,"y":565}}`
 
 	var move_deserialized Move
 	err := json.Unmarshal([]byte(args), &move_deserialized)

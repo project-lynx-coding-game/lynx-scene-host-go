@@ -7,7 +7,7 @@ import (
 )
 
 type Move struct {
-	TargetId int64         `json:"target_id"`
+	ObjectId int64         `json:"object_id"`
 	Vector   common.Vector `json:"vector"`
 }
 
@@ -30,7 +30,7 @@ func (move Move) Requirements(scene common.IScene) []func(scene common.IScene) b
 func (move Move) Effects(scene common.IScene) []func(scene common.IScene) common.IScene {
 	return []func(scene common.IScene) common.IScene{
 		func(scene common.IScene) common.IScene {
-			object, err := scene.GetObjectById(move.TargetId)
+			object, err := scene.GetObjectById(move.ObjectId)
 
 			if err != nil {
 				return scene
